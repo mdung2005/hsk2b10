@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 2 – Bài 10: 别找了，手机在桌子上呢</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #c0392b;
+  --red-light: #e74c3c;
+  --red-pale: #fdecea;
+  --gold: #d4a017;
+  --gold-light: #f0c040;
+  --ink: #1a1a2e;
+  --ink2: #2c3e50;
+  --gray: #6c757d;
+  --gray-light: #f4f6f8;
+  --white: #ffffff;
+  --green: #27ae60;
+  --blue: #2980b9;
+  --purple: #8e44ad;
+  --orange: #e67e22;
+  --radius: 16px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: #f7f3ee;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* NAV */
+.top-nav {
+  background: var(--red);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(192,57,43,0.4);
+}
+.nav-inner {
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 14px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff;
+  border-bottom-color: var(--gold-light);
+  background: rgba(255,255,255,0.08);
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #c0392b 0%, #922b21 50%, #1a1a2e 100%);
+  color: white;
+  padding: 48px 24px 36px;
+  text-align: center;
+}
+.hero-lesson { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; opacity: .7; margin-bottom: 8px; }
+.hero-zh { font-family: 'Noto Serif SC', serif; font-size: clamp(28px, 5vw, 44px); font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+.hero-pinyin { font-size: 15px; opacity: .8; margin-bottom: 4px; }
+.hero-vi { font-size: 14px; opacity: .65; }
+
+/* SECTION */
+.section {
+  display: none;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+.section.active { display: block; }
+.section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, var(--red), transparent);
+}
+
+/* ========== KHỞI ĐỘNG ========== */
+.warmup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 18px;
+}
+.flip-card {
+  height: 180px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,.2,.2,1);
+}
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.flip-front {
+  background: white;
+  border: 2px solid #e8ddd0;
+}
+.flip-back {
+  background: linear-gradient(135deg, var(--red), #922b21);
+  color: white;
+  transform: rotateY(180deg);
+}
+.flip-front .emoji { font-size: 40px; margin-bottom: 8px; }
+.flip-front .zh { font-family: 'Noto Serif SC', serif; font-size: 26px; font-weight: 700; color: var(--ink); }
+.flip-back .pinyin { font-size: 13px; opacity: .85; margin-bottom: 4px; }
+.flip-back .meaning { font-size: 15px; font-weight: 700; text-align: center; }
+.flip-hint { font-size: 10px; color: var(--gray); margin-top: 4px; }
+
+/* ========== TỪ MỚI ========== */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.vocab-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.vocab-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+.vocab-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid #f0ebe4;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.vocab-emoji { font-size: 36px; line-height: 1; }
+.vocab-main { flex: 1; }
+.vocab-zh { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 700; color: var(--ink); line-height: 1; }
+.vocab-pinyin { font-size: 13px; color: var(--red); margin-top: 3px; }
+.vocab-body { padding: 14px 20px; }
+.vocab-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 7px; font-size: 13px; }
+.vocab-label { color: var(--gray); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; min-width: 62px; }
+.vocab-hanviet { color: var(--purple); font-weight: 700; }
+.vocab-type { display: inline-block; background: var(--red-pale); color: var(--red); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.vocab-meaning { color: var(--ink2); font-weight: 600; }
+.vocab-example { background: var(--gray-light); border-radius: 10px; padding: 10px 14px; margin-top: 10px; }
+.vocab-ex-zh { font-family: 'Noto Sans SC', sans-serif; font-size: 15px; color: var(--ink); margin-bottom: 3px; }
+.vocab-ex-zh .highlight { color: var(--red); font-weight: 700; }
+.vocab-ex-pinyin { font-size: 11px; color: var(--gray); margin-bottom: 3px; }
+.vocab-ex-vi { font-size: 12px; color: var(--ink2); }
+.vocab-expand { display: inline-block; background: #fff8e1; color: var(--gold); border: 1px solid #ffe082; font-size: 11px; padding: 3px 10px; border-radius: 12px; margin-top: 8px; }
+
+/* ========== HOẠT ĐỘNG ========== */
+.activity-tabs { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+.act-tab {
+  padding: 10px 24px;
+  border-radius: 30px;
+  border: 2px solid var(--red);
+  color: var(--red);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background: white;
+  transition: all .2s;
+}
+.act-tab.active, .act-tab:hover {
+  background: var(--red);
+  color: white;
+}
+.activity-panel { display: none; }
+.activity-panel.active { display: block; }
+
+/* Flashcard activity */
+.fc-container { text-align: center; }
+.fc-card {
+  width: 340px;
+  height: 220px;
+  margin: 0 auto 24px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+.fc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .6s;
+}
+.fc-card.flipped .fc-inner { transform: rotateY(180deg); }
+.fc-front, .fc-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+.fc-front { background: white; border: 2px solid #e0d5ca; }
+.fc-back { background: linear-gradient(135deg, #c0392b, #6c1f1f); color: white; transform: rotateY(180deg); }
+.fc-zh { font-family: 'Noto Serif SC', serif; font-size: 52px; font-weight: 700; }
+.fc-pinyin { font-size: 18px; color: var(--red); margin-top: 8px; }
+.fc-back-pinyin { font-size: 14px; opacity: .8; margin-bottom: 6px; }
+.fc-back-meaning { font-size: 20px; font-weight: 700; text-align: center; }
+.fc-back-ex { font-size: 13px; opacity: .85; margin-top: 8px; text-align: center; }
+.fc-controls { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.fc-btn {
+  padding: 10px 24px;
+  border-radius: 30px;
+  border: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.fc-btn-prev { background: var(--gray-light); color: var(--ink2); }
+.fc-btn-next { background: var(--red); color: white; }
+.fc-btn:hover { opacity: .85; transform: scale(1.03); }
+.fc-progress { font-size: 13px; color: var(--gray); padding: 0 8px; }
+
+/* Match game */
+.match-game { }
+.match-score { text-align: right; font-size: 14px; color: var(--gray); margin-bottom: 16px; }
+.match-score span { font-size: 20px; font-weight: 700; color: var(--red); }
+.match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.match-item {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: white;
+  border: 2px solid #e0d5ca;
+  cursor: pointer;
+  font-size: 15px;
+  text-align: center;
+  transition: all .2s;
+  box-shadow: var(--shadow);
+  user-select: none;
+}
+.match-item.zh { font-family: 'Noto Sans SC', sans-serif; font-size: 22px; font-weight: 700; }
+.match-item.selected { border-color: var(--red); background: var(--red-pale); }
+.match-item.matched { border-color: var(--green); background: #eafaf1; color: var(--green); pointer-events: none; }
+.match-item.wrong { border-color: var(--red-light); background: var(--red-pale); animation: shake .4s; }
+.match-restart { margin-top: 20px; padding: 12px 32px; border-radius: 30px; background: var(--red); color: white; border: none; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* Sentence arrange */
+.sent-arrange { }
+.sent-item { margin-bottom: 28px; }
+.sent-question { font-size: 14px; color: var(--gray); margin-bottom: 10px; }
+.sent-vi { font-size: 13px; color: var(--blue); margin-bottom: 10px; font-style: italic; }
+.word-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 44px;
+  padding: 8px;
+  background: var(--gray-light);
+  border-radius: 10px;
+}
+.word-chip {
+  padding: 6px 14px;
+  background: white;
+  border: 2px solid #d0c9c0;
+  border-radius: 20px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.word-chip:hover { border-color: var(--red); background: var(--red-pale); }
+.word-chip.used { opacity: .3; pointer-events: none; }
+.sent-answer {
+  min-height: 44px;
+  padding: 8px;
+  background: white;
+  border: 2px dashed #d0c9c0;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.sent-answer .word-chip { border-color: var(--blue); }
+.sent-answer .word-chip:hover { border-color: var(--red); }
+.sent-feedback { font-size: 13px; margin-top: 4px; min-height: 20px; }
+.sent-feedback.ok { color: var(--green); }
+.sent-feedback.err { color: var(--red-light); }
+.sent-check-btn, .sent-reset-btn {
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.sent-check-btn { background: var(--red); color: white; }
+.sent-reset-btn { background: var(--gray-light); color: var(--ink2); }
+
+/* ========== NGỮ PHÁP ========== */
+.grammar-cards { display: flex; flex-direction: column; gap: 32px; }
+.grammar-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.grammar-header {
+  background: linear-gradient(135deg, var(--red), #922b21);
+  color: white;
+  padding: 20px 28px;
+}
+.grammar-num { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .7; margin-bottom: 4px; }
+.grammar-title { font-size: 20px; font-weight: 700; }
+.grammar-body { padding: 24px 28px; }
+.grammar-struct {
+  background: #fff8f0;
+  border-left: 4px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+.grammar-struct .formula { font-size: 14px; color: var(--gray); margin-bottom: 6px; }
+.grammar-desc { font-size: 14px; color: var(--ink2); margin-bottom: 16px; line-height: 1.7; }
+.grammar-examples { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.gram-ex {
+  background: var(--gray-light);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.gram-ex-zh { font-family: 'Noto Sans SC', sans-serif; font-size: 16px; margin-bottom: 3px; }
+.gram-ex-zh .hl { color: var(--red); font-weight: 700; }
+.gram-ex-py { font-size: 12px; color: var(--gray); margin-bottom: 2px; }
+.gram-ex-vi { font-size: 13px; color: var(--ink2); }
+
+/* Grammar exercise */
+.gram-ex-section { border-top: 1px solid #f0ebe4; padding-top: 20px; margin-top: 4px; }
+.gram-ex-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
+
+/* Fill blank */
+.fill-item { margin-bottom: 16px; }
+.fill-sentence {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  margin-bottom: 6px;
+  line-height: 2;
+}
+.fill-input {
+  border: none;
+  border-bottom: 2px solid var(--red);
+  outline: none;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  width: 120px;
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--red);
+}
+.fill-btn {
+  padding: 8px 20px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.fill-result { font-size: 13px; margin-top: 8px; }
+
+/* MC */
+.mc-item { margin-bottom: 20px; background: var(--gray-light); padding: 16px; border-radius: 12px; }
+.mc-q { font-family: 'Noto Sans SC', sans-serif; font-size: 15px; margin-bottom: 12px; font-weight: 600; }
+.mc-options { display: flex; flex-direction: column; gap: 8px; }
+.mc-opt {
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #e0d5ca;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all .2s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.mc-opt:hover { border-color: var(--red); }
+.mc-opt.correct { border-color: var(--green); background: #eafaf1; color: var(--green); }
+.mc-opt.wrong { border-color: var(--red-light); background: var(--red-pale); }
+.mc-opt.disabled { pointer-events: none; }
+
+/* ========== HỘI THOẠI ========== */
+.dialogue-tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+.dial-tab {
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--red);
+  color: var(--red);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  background: white;
+  transition: all .2s;
+}
+.dial-tab.active { background: var(--red); color: white; }
+.dialogue-panel { display: none; }
+.dialogue-panel.active { display: block; }
+
+.audio-player {
+  background: white;
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.audio-icon { font-size: 24px; }
+.audio-info { flex: 1; }
+.audio-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+audio { width: 100%; height: 32px; margin-top: 6px; }
+
+.pinyin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--gray);
+  cursor: pointer;
+  user-select: none;
+}
+.toggle-switch {
+  width: 36px; height: 20px;
+  background: #d0c9c0;
+  border-radius: 10px;
+  position: relative;
+  transition: background .2s;
+}
+.toggle-switch.on { background: var(--red); }
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: left .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.toggle-switch.on::after { left: 18px; }
+
+.chat-bubble-wrap { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+.bubble-row { display: flex; gap: 10px; }
+.bubble-row.right { flex-direction: row-reverse; }
+.bubble-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.bubble-row.right .bubble-avatar { background: var(--blue); }
+.bubble-content { max-width: 75%; }
+.bubble-zh {
+  background: white;
+  border-radius: 0 14px 14px 14px;
+  padding: 12px 16px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  box-shadow: var(--shadow);
+  line-height: 1.6;
+}
+.bubble-row.right .bubble-zh {
+  background: var(--blue);
+  color: white;
+  border-radius: 14px 0 14px 14px;
+}
+.bubble-pinyin { font-size: 11px; color: var(--gray); margin-top: 4px; padding: 0 4px; }
+.bubble-vi { font-size: 12px; color: var(--ink2); margin-top: 2px; padding: 0 4px; font-style: italic; }
+.hide-pinyin .bubble-pinyin { display: none; }
+
+/* Comprehension questions */
+.comp-qs { margin-top: 24px; }
+.comp-q-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 14px; }
+.comp-q { margin-bottom: 18px; }
+.comp-q-text { font-family: 'Noto Sans SC', sans-serif; font-size: 15px; margin-bottom: 8px; }
+.comp-q-py { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
+.comp-answer-area {
+  border: 2px solid #e0d5ca;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--gray);
+  transition: all .2s;
+}
+.comp-answer-area.show { color: var(--ink); background: #eafaf1; border-color: var(--green); }
+
+/* ========== BÀI TẬP MỞ RỘNG ========== */
+.ext-section { margin-bottom: 32px; }
+.ext-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 10px 16px;
+  background: var(--gray-light);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--gold);
+}
+.pdf-ex-item { background: white; border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.pdf-ex-zh { font-family: 'Noto Sans SC', sans-serif; font-size: 16px; margin-bottom: 6px; }
+.pdf-ex-choice {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 2px solid #e0d5ca;
+  border-radius: 20px;
+  margin: 4px;
+  cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  transition: all .2s;
+}
+.pdf-ex-choice:hover { border-color: var(--red); background: var(--red-pale); }
+.pdf-ex-choice.correct { border-color: var(--green); background: #eafaf1; color: var(--green); }
+.pdf-ex-choice.wrong { border-color: var(--red-light); background: var(--red-pale); }
+
+/* responsive */
+@media (max-width: 600px) {
+  .match-cols { grid-template-columns: 1fr 1fr; }
+  .vocab-grid { grid-template-columns: 1fr; }
+  .fc-card { width: 100%; max-width: 340px; }
+  .warmup-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* TTS Player */
+.tts-btn {
+  padding: 8px 18px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.tts-btn:hover { opacity: .85; }
+.tts-btn.playing { background: var(--green); animation: pulse 1s infinite; }
+.tts-stop { background: var(--gray); }
+.tts-stop:hover { background: var(--ink2); opacity: 1; }
+.tts-speed {
+  padding: 6px 12px;
+  border: 2px solid #e0d5ca;
+  border-radius: 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+  outline: none;
+}
+/* Per-bubble play button */
+.bubble-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  background: var(--red-pale);
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: 50%;
+  font-size: 11px;
+  cursor: pointer;
+  margin-left: 6px;
+  flex-shrink: 0;
+  transition: all .15s;
+  vertical-align: middle;
+}
+.bubble-play:hover { background: var(--red); color: white; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(39,174,96,.4); }
+  50% { box-shadow: 0 0 0 8px rgba(39,174,96,0); }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-lesson">HSK 2 · Bài 10</div>
+  <div class="hero-zh">别找了，手机在桌子上呢</div>
+  <div class="hero-pinyin">Bié zhǎo le, shǒujī zài zhuōzi shàng ne</div>
+  <div class="hero-vi">Thôi tìm nữa làm gì, điện thoại đang ở trên bàn kia</div>
+</div>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('khoidong',this)">🎴 Khởi động</button>
+    <button class="nav-btn" onclick="showSection('tumoi',this)">📖 Từ mới</button>
+    <button class="nav-btn" onclick="showSection('hoatdong',this)">🎮 Hoạt động</button>
+    <button class="nav-btn" onclick="showSection('ngu-phap',this)">📐 Ngữ pháp</button>
+    <button class="nav-btn" onclick="showSection('hoithoai',this)">💬 Hội thoại</button>
+    <button class="nav-btn" onclick="showSection('baitap',this)">✏️ Bài tập</button>
+  </div>
+</nav>
+
+<!-- ========== KHỞI ĐỘNG ========== -->
+<section id="khoidong" class="section active">
+  <div class="section-title">🎴 Khởi động – Thẻ từ</div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px;">Nhấp vào thẻ để lật và xem nghĩa 👇</p>
+  <div class="warmup-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🥚</div><div class="zh">鸡蛋</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">jīdàn</div><div class="meaning">Trứng gà</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🍉</div><div class="zh">西瓜</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">xīguā</div><div class="meaning">Dưa hấu</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">😴</div><div class="zh">休息</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">xiūxi</div><div class="meaning">Nghỉ ngơi</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">📱</div><div class="zh">手机</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">shǒujī</div><div class="meaning">Điện thoại</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🍽️</div><div class="zh">准备午饭</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">zhǔnbèi wǔfàn</div><div class="meaning">Chuẩn bị bữa trưa</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">💊</div><div class="zh">吃药</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">chī yào</div><div class="meaning">Uống thuốc</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">👨‍👦</div><div class="zh">哥哥</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">gēge</div><div class="meaning">Anh trai</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🧹</div><div class="zh">洗</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">xǐ</div><div class="meaning">Rửa / giặt</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">📚</div><div class="zh">课</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">kè</div><div class="meaning">Bài học / tiết học</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🤝</div><div class="zh">帮助</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">bāngzhù</div><div class="meaning">Giúp đỡ</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">🚫</div><div class="zh">别</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">bié</div><div class="meaning">Đừng / không nên</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front"><div class="emoji">⏳</div><div class="zh">正在</div><div class="flip-hint">nhấp để lật</div></div>
+        <div class="flip-back"><div class="pinyin">zhèngzài</div><div class="meaning">Đang (làm gì đó)</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TỪ MỚI ========== -->
+<section id="tumoi" class="section">
+  <div class="section-title">📖 Từ mới – 生词</div>
+  <div class="vocab-grid">
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">📚</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">课</div>
+          <div class="vocab-pinyin">kè</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Khóa</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Bài học, tiết học, lớp học</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">明天上午还有<span class="highlight">汉语课</span>呢。</div>
+          <div class="vocab-ex-pinyin">Míngtiān shàngwǔ hái yǒu Hànyǔ kè ne.</div>
+          <div class="vocab-ex-vi">Sáng mai vẫn còn có tiết tiếng Trung đấy.</div>
+        </div>
+        <div class="vocab-expand">📌 上课 lên lớp · 下课 tan học · 有课 có tiết học</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">🤝</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">帮助</div>
+          <div class="vocab-pinyin">bāngzhù</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Bang trợ</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">v. / n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Giúp đỡ, hỗ trợ</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">看电视对学汉语有<span class="highlight">帮助</span>。</div>
+          <div class="vocab-ex-pinyin">Kàn diànshì duì xué Hànyǔ yǒu bāngzhù.</div>
+          <div class="vocab-ex-vi">Xem TV có ích cho việc học tiếng Trung.</div>
+        </div>
+        <div class="vocab-expand">📌 帮助同学 giúp bạn học · 对…有帮助 có ích cho…</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">🚫</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">别</div>
+          <div class="vocab-pinyin">bié</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Biệt</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">adv.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Đừng, không nên (cấm đoán)</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh"><span class="highlight">别</span>看报纸了，医生说你要多休息。</div>
+          <div class="vocab-ex-pinyin">Bié kàn bàozhǐ le, yīshēng shuō nǐ yào duō xiūxi.</div>
+          <div class="vocab-ex-vi">Đừng đọc báo nữa, bác sĩ nói bạn cần nghỉ ngơi nhiều hơn.</div>
+        </div>
+        <div class="vocab-expand">📌 别说话 đừng nói · 别看电视 đừng xem TV</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">👨‍👦</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">哥哥</div>
+          <div class="vocab-pinyin">gēge</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Ca ca</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Anh trai</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh"><span class="highlight">哥哥</span>今天中午回来吃饭。</div>
+          <div class="vocab-ex-pinyin">Gēge jīntiān zhōngwǔ huílái chīfàn.</div>
+          <div class="vocab-ex-vi">Anh trai hôm nay về ăn cơm trưa.</div>
+        </div>
+        <div class="vocab-expand">📌 弟弟 em trai · 姐姐 chị gái · 妹妹 em gái</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">🥚</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">鸡蛋</div>
+          <div class="vocab-pinyin">jīdàn</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Kê đản</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Trứng gà</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">我去超市买了一些<span class="highlight">鸡蛋</span>。</div>
+          <div class="vocab-ex-pinyin">Wǒ qù chāoshì mǎile yīxiē jīdàn.</div>
+          <div class="vocab-ex-vi">Tôi đã ra siêu thị mua một ít trứng gà.</div>
+        </div>
+        <div class="vocab-expand">📌 买鸡蛋 mua trứng · 一个鸡蛋 một quả trứng</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">🍉</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">西瓜</div>
+          <div class="vocab-pinyin">xīguā</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Tây qua</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Dưa hấu</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">我买了一点儿<span class="highlight">西瓜</span>。</div>
+          <div class="vocab-ex-pinyin">Wǒ mǎile yīdiǎnr xīguā.</div>
+          <div class="vocab-ex-vi">Tôi đã mua một ít dưa hấu.</div>
+        </div>
+        <div class="vocab-expand">📌 吃西瓜 ăn dưa hấu · 一个西瓜 một quả dưa hấu</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">⏳</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">正在</div>
+          <div class="vocab-pinyin">zhèngzài</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Chính tại</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">adv.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Đang (diễn ra hành động)</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">妈妈<span class="highlight">正在</span>准备午饭呢。</div>
+          <div class="vocab-ex-pinyin">Māma zhèngzài zhǔnbèi wǔfàn ne.</div>
+          <div class="vocab-ex-vi">Mẹ đang chuẩn bị bữa trưa đấy.</div>
+        </div>
+        <div class="vocab-expand">📌 正在学习 đang học · 正在做饭 đang nấu cơm</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">📱</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">手机</div>
+          <div class="vocab-pinyin">shǒujī</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Thủ cơ</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">n.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Điện thoại di động</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">别找了，<span class="highlight">手机</span>在桌子上呢。</div>
+          <div class="vocab-ex-pinyin">Bié zhǎo le, shǒujī zài zhuōzi shàng ne.</div>
+          <div class="vocab-ex-vi">Thôi tìm nữa làm gì, điện thoại đang ở trên bàn kia.</div>
+        </div>
+        <div class="vocab-expand">📌 手机号 số điện thoại · 玩手机 chơi điện thoại</div>
+      </div>
+    </div>
+
+    <div class="vocab-card">
+      <div class="vocab-header">
+        <div class="vocab-emoji">🧹</div>
+        <div class="vocab-main">
+          <div class="vocab-zh">洗</div>
+          <div class="vocab-pinyin">xǐ</div>
+        </div>
+      </div>
+      <div class="vocab-body">
+        <div class="vocab-row"><span class="vocab-label">Hán Việt</span><span class="vocab-hanviet">Tẩy / Tẩy</span></div>
+        <div class="vocab-row"><span class="vocab-label">Từ loại</span><span class="vocab-type">v.</span></div>
+        <div class="vocab-row"><span class="vocab-label">Nghĩa</span><span class="vocab-meaning">Rửa, giặt, tắm</span></div>
+        <div class="vocab-example">
+          <div class="vocab-ex-zh">那件衣服我帮你<span class="highlight">洗</span>了。</div>
+          <div class="vocab-ex-pinyin">Nà jiàn yīfu wǒ bāng nǐ xǐ le.</div>
+          <div class="vocab-ex-vi">Cái áo đó tôi đã giặt giúp bạn rồi.</div>
+        </div>
+        <div class="vocab-expand">📌 洗衣服 giặt áo · 洗手 rửa tay · 洗头 gội đầu</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== HOẠT ĐỘNG ========== -->
+<section id="hoatdong" class="section">
+  <div class="section-title">🎮 Hoạt động luyện tập</div>
+  <div class="activity-tabs">
+    <button class="act-tab active" onclick="switchAct('flashcard',this)">🃏 Flashcard</button>
+    <button class="act-tab" onclick="switchAct('match',this)">🔗 Ghép từ</button>
+    <button class="act-tab" onclick="switchAct('arrange',this)">📝 Sắp xếp câu</button>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div id="act-flashcard" class="activity-panel active">
+    <div class="fc-container">
+      <div class="fc-card" id="fcCard" onclick="flipFC()">
+        <div class="fc-inner">
+          <div class="fc-front">
+            <div class="fc-zh" id="fcZh">课</div>
+            <div class="fc-pinyin" id="fcPy">kè</div>
+          </div>
+          <div class="fc-back">
+            <div class="fc-back-pinyin" id="fcBPy">kè</div>
+            <div class="fc-back-meaning" id="fcMeaning">Bài học / tiết học</div>
+            <div class="fc-back-ex" id="fcEx">上课 lên lớp · 下课 tan học</div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-controls">
+        <button class="fc-btn fc-btn-prev" onclick="fcNav(-1)">◀ Trước</button>
+        <span class="fc-progress" id="fcProg">1 / 9</span>
+        <button class="fc-btn fc-btn-next" onclick="fcNav(1)">Tiếp ▶</button>
+      </div>
+      <p style="font-size:12px;color:var(--gray);margin-top:14px;">Nhấp vào thẻ để xem nghĩa</p>
+    </div>
+  </div>
+
+  <!-- MATCH GAME -->
+  <div id="act-match" class="activity-panel">
+    <div class="match-score">Điểm: <span id="matchScore">0</span> / 9</div>
+    <div class="match-cols">
+      <div id="matchLeft"></div>
+      <div id="matchRight"></div>
+    </div>
+    <button class="match-restart" onclick="initMatch()">🔄 Chơi lại</button>
+  </div>
+
+  <!-- SENTENCE ARRANGE -->
+  <div id="act-arrange" class="activity-panel">
+    <div id="arrangeContainer"></div>
+  </div>
+</section>
+
+<!-- ========== NGỮ PHÁP ========== -->
+<section id="ngu-phap" class="section">
+  <div class="section-title">📐 Ngữ pháp – 语言点</div>
+  <div class="grammar-cards">
+
+    <!-- Grammar 1 -->
+    <div class="grammar-card">
+      <div class="grammar-header">
+        <div class="grammar-num">Điểm ngữ pháp 1</div>
+        <div class="grammar-title">🚫 Câu cầu khiến: 别/不要…了</div>
+      </div>
+      <div class="grammar-body">
+        <div class="grammar-struct">
+          <div class="formula">Cấu trúc:</div>
+          <strong>不要 + V（+O）+ 了 &nbsp;=&nbsp; 别 + V（+O）+ 了</strong>
+        </div>
+        <div class="grammar-desc">
+          Dùng để <strong>ngăn cản hoặc cấm đoán</strong> ai đó làm việc gì. Tương đương "Đừng… nữa" trong tiếng Việt.<br>
+          &bull; <strong>不要</strong> mang sắc thái nhẹ nhàng hơn, thường dùng khi khuyên bảo.<br>
+          &bull; <strong>别</strong> ngắn gọn, phổ biến hơn trong hội thoại.
+        </div>
+        <div class="grammar-examples">
+          <div class="gram-ex">
+            <div class="gram-ex-zh"><span class="hl">别</span>看报纸<span class="hl">了</span>，医生说你要多休息。</div>
+            <div class="gram-ex-py">Bié kàn bàozhǐ le, yīshēng shuō nǐ yào duō xiūxi.</div>
+            <div class="gram-ex-vi">Đừng đọc báo nữa, bác sĩ nói bạn cần nghỉ ngơi nhiều hơn.</div>
+          </div>
+          <div class="gram-ex">
+            <div class="gram-ex-zh"><span class="hl">不要</span>看电视<span class="hl">了</span>，明天上午还有汉语课呢。</div>
+            <div class="gram-ex-py">Bú yào kàn diànshì le, míngtiān shàngwǔ hái yǒu Hànyǔ kè ne.</div>
+            <div class="gram-ex-vi">Đừng xem TV nữa, sáng mai còn có tiết tiếng Trung đấy.</div>
+          </div>
+          <div class="gram-ex">
+            <div class="gram-ex-zh"><span class="hl">别</span>找<span class="hl">了</span>，手机在桌子上呢。</div>
+            <div class="gram-ex-py">Bié zhǎo le, shǒujī zài zhuōzi shàng ne.</div>
+            <div class="gram-ex-vi">Thôi tìm nữa làm gì, điện thoại đang ở trên bàn kia.</div>
+          </div>
+        </div>
+
+        <!-- Exercise 1 -->
+        <div class="gram-ex-section">
+          <div class="gram-ex-title">✏️ Luyện tập – Chọn đáp án đúng</div>
+          <div class="mc-item">
+            <div class="mc-q">1. ______ 玩手机了，快去睡觉吧！(Đừng chơi điện thoại nữa, đi ngủ đi!)</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'correct')">A. 别</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">B. 很</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 都</div>
+            </div>
+          </div>
+          <div class="mc-item">
+            <div class="mc-q">2. 不要喝茶____，医生说吃药后两个小时不要喝茶。</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 吗</div>
+              <div class="mc-opt" onclick="checkMC(this,'correct')">B. 了</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 呢</div>
+            </div>
+          </div>
+          <div class="mc-item">
+            <div class="mc-q">3. 别____了，你的病已经好了。(Đừng uống thuốc nữa, bạn đã khỏi bệnh rồi.)</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 休息</div>
+              <div class="mc-opt" onclick="checkMC(this,'correct')">B. 吃药</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 看书</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <div class="gram-ex-title">✏️ Điền vào chỗ trống – Dịch sang tiếng Trung</div>
+            <div class="fill-item">
+              <div class="fill-sentence">① Đừng làm việc nữa, mau ngủ đi! → 别<input class="fill-input" id="f1" placeholder="...">了。</div>
+            </div>
+            <div class="fill-item">
+              <div class="fill-sentence">② Đừng nghịch máy tính nữa, ngày mai còn có bài kiểm tra! → <input class="fill-input" id="f2" placeholder="别..." style="width:200px"></div>
+            </div>
+            <button class="fill-btn" onclick="checkFill1()">Kiểm tra</button>
+            <div class="fill-result" id="fill1-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grammar 2 -->
+    <div class="grammar-card">
+      <div class="grammar-header">
+        <div class="grammar-num">Điểm ngữ pháp 2</div>
+        <div class="grammar-title">🔗 Giới từ 对 – Quan hệ tương quan</div>
+      </div>
+      <div class="grammar-body">
+        <div class="grammar-struct">
+          <div class="formula">Cấu trúc:</div>
+          <strong>A + 对 + B + V/Adj（+ O）</strong>
+        </div>
+        <div class="grammar-desc">
+          Giới từ <strong>对</strong> dùng để chỉ <strong>mối quan hệ tương quan</strong> giữa người với người, người với sự vật, hoặc sự vật với sự vật.<br>
+          &bull; <strong>A 对 B 很好</strong> = A tốt với B<br>
+          &bull; <strong>A 对 B 有帮助</strong> = A có ích cho B<br>
+          &bull; <strong>A 对 B 不好</strong> = A không tốt cho B
+        </div>
+        <div class="grammar-examples">
+          <div class="gram-ex">
+            <div class="gram-ex-zh">看电视<span class="hl">对</span>学汉语有帮助。</div>
+            <div class="gram-ex-py">Kàn diànshì duì xué Hànyǔ yǒu bāngzhù.</div>
+            <div class="gram-ex-vi">Xem TV có ích cho việc học tiếng Trung.</div>
+          </div>
+          <div class="gram-ex">
+            <div class="gram-ex-zh">跑步<span class="hl">对</span>身体很好。</div>
+            <div class="gram-ex-py">Pǎobù duì shēntǐ hěn hǎo.</div>
+            <div class="gram-ex-vi">Chạy bộ rất tốt cho sức khỏe.</div>
+          </div>
+          <div class="gram-ex">
+            <div class="gram-ex-zh">老师<span class="hl">对</span>学生非常好。</div>
+            <div class="gram-ex-py">Lǎoshī duì xuésheng fēicháng hǎo.</div>
+            <div class="gram-ex-vi">Giáo viên rất tốt với học sinh.</div>
+          </div>
+          <div class="gram-ex">
+            <div class="gram-ex-zh">长时间玩电脑<span class="hl">对</span>眼睛不好。</div>
+            <div class="gram-ex-py">Cháng shíjiān wán diànnǎo duì yǎnjing bù hǎo.</div>
+            <div class="gram-ex-vi">Chơi máy tính lâu không tốt cho mắt.</div>
+          </div>
+        </div>
+
+        <div class="gram-ex-section">
+          <div class="gram-ex-title">✏️ Luyện tập – Chọn đáp án đúng</div>
+          <div class="mc-item">
+            <div class="mc-q">1. 游泳______身体很好。</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 给</div>
+              <div class="mc-opt" onclick="checkMC(this,'correct')">B. 对</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 和</div>
+            </div>
+          </div>
+          <div class="mc-item">
+            <div class="mc-q">2. 看报纸对学习英语______。</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 很多</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">B. 不少</div>
+              <div class="mc-opt" onclick="checkMC(this,'correct')">C. 有帮助</div>
+            </div>
+          </div>
+          <div class="mc-item">
+            <div class="mc-q">3. Dịch: "Thầy giáo rất tốt với chúng tôi."</div>
+            <div class="mc-options">
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 老师对我们很帮助。</div>
+              <div class="mc-opt" onclick="checkMC(this,'correct')">B. 老师对我们非常好。</div>
+              <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 老师很对我们好。</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <div class="gram-ex-title">✏️ Sắp xếp thành câu đúng</div>
+            <div class="fill-item">
+              <div class="fill-sentence" style="font-size:14px;">① 对 / 身体 / 好 / 睡早觉 / 很 → <input class="fill-input" id="f3" placeholder="..." style="width:240px"></div>
+            </div>
+            <div class="fill-item">
+              <div class="fill-sentence" style="font-size:14px;">② 对 / 有帮助 / 汉语 / 看电影 / 学 → <input class="fill-input" id="f4" placeholder="..." style="width:240px"></div>
+            </div>
+            <button class="fill-btn" onclick="checkFill2()">Kiểm tra</button>
+            <div class="fill-result" id="fill2-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== HỘI THOẠI ========== -->
+<section id="hoithoai" class="section">
+  <div class="section-title">💬 Hội thoại – 课文</div>
+  <div class="dialogue-tabs">
+    <button class="dial-tab active" onclick="switchDial(0,this)">📺 Bài 1</button>
+    <button class="dial-tab" onclick="switchDial(1,this)">🏥 Bài 2</button>
+    <button class="dial-tab" onclick="switchDial(2,this)">🛒 Bài 3</button>
+    <button class="dial-tab" onclick="switchDial(3,this)">📱 Bài 4</button>
+  </div>
+
+  <div id="dial0" class="dialogue-panel active">
+    <div class="audio-player">
+      <span class="audio-icon">🎧</span>
+      <div class="audio-info" style="flex:1;">
+        <div class="audio-title">Bài khóa 1 – Ở nhà (看电视)</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="tts-btn" id="ttsBtn0" onclick="playDialogue(0)">▶ Phát toàn bộ</button>
+          <button class="tts-btn tts-stop" onclick="stopTTS()">⏹ Dừng</button>
+          <select class="tts-speed" id="ttsSpeed0">
+            <option value="0.6">🐢 Chậm</option>
+            <option value="0.85" selected>🚶 Bình thường</option>
+            <option value="1.0">🏃 Nhanh</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <label class="pinyin-toggle" onclick="togglePinyin('chat0')">
+      <div class="toggle-switch on" id="pt0"></div>
+      <span>Hiện phiên âm</span>
+    </label>
+    <div class="chat-bubble-wrap" id="chat0">
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">不要看电视了，明天上午还有汉语课呢。<span class="bubble-play" onclick="speakText('不要看电视了，明天上午还有汉语课呢。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Bú yào kàn diànshì le, míngtiān shàngwǔ hái yǒu Hànyǔ kè ne.</div>
+          <div class="bubble-vi">Đừng xem TV nữa, sáng mai còn có tiết tiếng Trung đấy.</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">看电视对学汉语有帮助。<span class="bubble-play" onclick="speakText('看电视对学汉语有帮助。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Kàn diànshì duì xué Hànyǔ yǒu bāngzhù.</div>
+          <div class="bubble-vi">Xem TV có ích cho việc học tiếng Trung.</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">明天的课你都准备好了吗？<span class="bubble-play" onclick="speakText('明天的课你都准备好了吗？', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Míngtiān de kè nǐ dōu zhǔnbèi hǎo le ma?</div>
+          <div class="bubble-vi">Bài ngày mai bạn đã chuẩn bị xong hết chưa?</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">都准备好了。<span class="bubble-play" onclick="speakText('都准备好了。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Dōu zhǔnbèi hǎo le.</div>
+          <div class="bubble-vi">Chuẩn bị xong hết rồi.</div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-qs">
+      <div class="comp-q-title">❓ Câu hỏi hiểu bài</div>
+      <div class="comp-q">
+        <div class="comp-q-text">1. 孩子们正在做什么？</div>
+        <div class="comp-q-py">Háizimen zhèngzài zuò shénme?</div>
+        <div class="comp-answer-area" onclick="this.classList.toggle('show')" title="Nhấp để xem đáp án">👆 Nhấp xem đáp án: 孩子们正在看电视。(Các bạn nhỏ đang xem TV.)</div>
+      </div>
+      <div class="comp-q">
+        <div class="comp-q-text">2. 妈妈为什么不让他们看电视了？</div>
+        <div class="comp-q-py">Māma wèi shénme bú ràng tāmen kàn diànshì le?</div>
+        <div class="comp-answer-area" onclick="this.classList.toggle('show')">👆 Nhấp xem đáp án: 因为他们明天有汉语课。(Vì ngày mai họ có tiết tiếng Trung.)</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dial1" class="dialogue-panel">
+    <div class="audio-player">
+      <span class="audio-icon">🎧</span>
+      <div class="audio-info" style="flex:1;">
+        <div class="audio-title">Bài khóa 2 – Ở bệnh viện (别看报纸了)</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="tts-btn" id="ttsBtn1" onclick="playDialogue(1)">▶ Phát toàn bộ</button>
+          <button class="tts-btn tts-stop" onclick="stopTTS()">⏹ Dừng</button>
+          <select class="tts-speed" id="ttsSpeed1">
+            <option value="0.6">🐢 Chậm</option>
+            <option value="0.85" selected>🚶 Bình thường</option>
+            <option value="1.0">🏃 Nhanh</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <label class="pinyin-toggle" onclick="togglePinyin('chat1')">
+      <div class="toggle-switch on" id="pt1"></div>
+      <span>Hiện phiên âm</span>
+    </label>
+    <div class="chat-bubble-wrap" id="chat1">
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">别看报纸了，医生说你要多休息。<span class="bubble-play" onclick="speakText('别看报纸了，医生说你要多休息。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Bié kàn bàozhǐ le, yīshēng shuō nǐ yào duō xiūxi.</div>
+          <div class="bubble-vi">Đừng đọc báo nữa, bác sĩ nói bạn cần nghỉ ngơi nhiều hơn.</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">好，不看了。给我一杯茶吧。<span class="bubble-play" onclick="speakText('好，不看了。给我一杯茶吧。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Hǎo, bù kàn le. Gěi wǒ yī bēi chá ba.</div>
+          <div class="bubble-vi">Ừ, không đọc nữa. Cho tôi một tách trà đi.</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">医生说吃药后两个小时不要喝茶。<span class="bubble-play" onclick="speakText('医生说吃药后两个小时不要喝茶。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Yīshēng shuō chī yào hòu liǎng ge xiǎoshí bú yào hē chá.</div>
+          <div class="bubble-vi">Bác sĩ nói sau khi uống thuốc hai giờ đồng hồ thì không được uống trà.</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">医生还说什么了？<span class="bubble-play" onclick="speakText('医生还说什么了？', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Yīshēng hái shuō shénme le?</div>
+          <div class="bubble-vi">Bác sĩ còn nói gì nữa?</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">医生让你听我的。<span class="bubble-play" onclick="speakText('医生让你听我的。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Yīshēng ràng nǐ tīng wǒ de.</div>
+          <div class="bubble-vi">Bác sĩ bảo bạn nghe lời tôi.</div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-qs">
+      <div class="comp-q-title">❓ Câu hỏi hiểu bài</div>
+      <div class="comp-q">
+        <div class="comp-q-text">3. 吃药以后可以喝茶吗？</div>
+        <div class="comp-q-py">Chī yào yǐhòu kěyǐ hē chá ma?</div>
+        <div class="comp-answer-area" onclick="this.classList.toggle('show')">👆 Nhấp xem đáp án: 不可以。医生说吃药后两个小时不要喝茶。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dial2" class="dialogue-panel">
+    <div class="audio-player">
+      <span class="audio-icon">🎧</span>
+      <div class="audio-info" style="flex:1;">
+        <div class="audio-title">Bài khóa 3 – Ở nhà (哥哥回来吃饭)</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="tts-btn" id="ttsBtn2" onclick="playDialogue(2)">▶ Phát toàn bộ</button>
+          <button class="tts-btn tts-stop" onclick="stopTTS()">⏹ Dừng</button>
+          <select class="tts-speed" id="ttsSpeed2">
+            <option value="0.6">🐢 Chậm</option>
+            <option value="0.85" selected>🚶 Bình thường</option>
+            <option value="1.0">🏃 Nhanh</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <label class="pinyin-toggle" onclick="togglePinyin('chat2')">
+      <div class="toggle-switch on" id="pt2"></div>
+      <span>Hiện phiên âm</span>
+    </label>
+    <div class="chat-bubble-wrap" id="chat2">
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">你怎么买了这么多东西啊？<span class="bubble-play" onclick="speakText('你怎么买了这么多东西啊？', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Nǐ zěnme mǎile zhème duō dōngxi a?</div>
+          <div class="bubble-vi">Sao bạn mua nhiều đồ thế?</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">哥哥今天中午回来吃饭。<span class="bubble-play" onclick="speakText('哥哥今天中午回来吃饭。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Gēge jīntiān zhōngwǔ huílái chīfàn.</div>
+          <div class="bubble-vi">Anh trai hôm nay về ăn cơm trưa.</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">我看看买什么了。羊肉、鸡蛋、面条、西瓜……真不少！妈妈呢？<span class="bubble-play" onclick="speakText('我看看买什么了。羊肉、鸡蛋、面条、西瓜……真不少！妈妈呢？', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Wǒ kàn kàn mǎi shénme le. Yángròu, jīdàn, miàntiáo, xīguā... zhēn bù shǎo! Māma ne?</div>
+          <div class="bubble-vi">Xem mua những gì nào. Thịt cừu, trứng gà, mì, dưa hấu... nhiều thật! Mẹ đâu rồi?</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">正在准备午饭呢！<span class="bubble-play" onclick="speakText('正在准备午饭呢！', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Zhèngzài zhǔnbèi wǔfàn ne!</div>
+          <div class="bubble-vi">Đang chuẩn bị bữa trưa đấy!</div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-qs">
+      <div class="comp-q-title">❓ Câu hỏi hiểu bài</div>
+      <div class="comp-q">
+        <div class="comp-q-text">4. 他今天都买了什么东西？为什么要买这么多？</div>
+        <div class="comp-answer-area" onclick="this.classList.toggle('show')">👆 Đáp án: 他买了羊肉、鸡蛋、面条、西瓜。因为哥哥今天中午要回来吃饭。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dial3" class="dialogue-panel">
+    <div class="audio-player">
+      <span class="audio-icon">🎧</span>
+      <div class="audio-info" style="flex:1;">
+        <div class="audio-title">Bài khóa 4 – Ở nhà (别找了，手机在桌子上)</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <button class="tts-btn" id="ttsBtn3" onclick="playDialogue(3)">▶ Phát toàn bộ</button>
+          <button class="tts-btn tts-stop" onclick="stopTTS()">⏹ Dừng</button>
+          <select class="tts-speed" id="ttsSpeed3">
+            <option value="0.6">🐢 Chậm</option>
+            <option value="0.85" selected>🚶 Bình thường</option>
+            <option value="1.0">🏃 Nhanh</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <label class="pinyin-toggle" onclick="togglePinyin('chat3')">
+      <div class="toggle-switch on" id="pt3"></div>
+      <span>Hiện phiên âm</span>
+    </label>
+    <div class="chat-bubble-wrap" id="chat3">
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">你在找什么？<span class="bubble-play" onclick="speakText('你在找什么？', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Nǐ zài zhǎo shénme?</div>
+          <div class="bubble-vi">Bạn đang tìm gì vậy?</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">你看见我的手机了吗？白色的。<span class="bubble-play" onclick="speakText('你看见我的手机了吗？白色的。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Nǐ kànjiàn wǒ de shǒujī le ma? Báisè de.</div>
+          <div class="bubble-vi">Bạn có thấy điện thoại của tôi không? Màu trắng ấy.</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">别找了，手机在桌子上呢，电脑旁边。<span class="bubble-play" onclick="speakText('别找了，手机在桌子上呢，电脑旁边。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Bié zhǎo le, shǒujī zài zhuōzi shàng ne, diànnǎo pángbiān.</div>
+          <div class="bubble-vi">Thôi tìm nữa làm gì, điện thoại đang trên bàn kia, cạnh máy tính.</div>
+        </div>
+      </div>
+      <div class="bubble-row right">
+        <div class="bubble-avatar">B</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">你看见我的衣服了吗？红色的那件。<span class="bubble-play" onclick="speakText('你看见我的衣服了吗？红色的那件。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Nǐ kànjiàn wǒ de yīfu le ma? Hóngsè de nà jiàn.</div>
+          <div class="bubble-vi">Bạn có thấy cái áo của tôi không? Cái màu đỏ ấy.</div>
+        </div>
+      </div>
+      <div class="bubble-row left">
+        <div class="bubble-avatar">A</div>
+        <div class="bubble-content">
+          <div class="bubble-zh">那件衣服我帮你洗了，在外边呢。<span class="bubble-play" onclick="speakText('那件衣服我帮你洗了，在外边呢。', null)" title="Phát câu này">▶</span></div>
+          <div class="bubble-pinyin">Nà jiàn yīfu wǒ bāng nǐ xǐ le, zài wàibiān ne.</div>
+          <div class="bubble-vi">Cái áo đó tôi đã giặt giúp bạn rồi, đang ở ngoài kia.</div>
+        </div>
+      </div>
+    </div>
+    <div class="comp-qs">
+      <div class="comp-q-title">❓ Câu hỏi hiểu bài</div>
+      <div class="comp-q">
+        <div class="comp-q-text">5. 手机在哪里？衣服呢？</div>
+        <div class="comp-answer-area" onclick="this.classList.toggle('show')">👆 Đáp án: 手机在桌子上，电脑旁边。衣服在外边（已经洗了）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BÀI TẬP MỞ RỘNG ========== -->
+<section id="baitap" class="section">
+  <div class="section-title">✏️ Bài tập tổng hợp</div>
+
+  <div class="ext-section">
+    <div class="ext-title">📋 Bài 1 – Ghép từ với hình ảnh (từ SGK)</div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:14px;">Chọn nghĩa tiếng Việt đúng cho mỗi từ:</p>
+    <div class="mc-item">
+      <div class="mc-q" style="font-family:'Noto Sans SC',sans-serif;">西瓜 (xīguā)</div>
+      <div class="mc-options" style="display:flex;flex-direction:row;gap:8px;flex-wrap:wrap;">
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Trứng gà</div>
+        <div class="mc-opt" onclick="checkMC(this,'correct')" style="flex:1;min-width:80px;">Dưa hấu</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Điện thoại</div>
+      </div>
+    </div>
+    <div class="mc-item">
+      <div class="mc-q" style="font-family:'Noto Sans SC',sans-serif;">手机 (shǒujī)</div>
+      <div class="mc-options" style="display:flex;flex-direction:row;gap:8px;flex-wrap:wrap;">
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Nghỉ ngơi</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Uống thuốc</div>
+        <div class="mc-opt" onclick="checkMC(this,'correct')" style="flex:1;min-width:80px;">Điện thoại</div>
+      </div>
+    </div>
+    <div class="mc-item">
+      <div class="mc-q" style="font-family:'Noto Sans SC',sans-serif;">休息 (xiūxi)</div>
+      <div class="mc-options" style="display:flex;flex-direction:row;gap:8px;flex-wrap:wrap;">
+        <div class="mc-opt" onclick="checkMC(this,'correct')" style="flex:1;min-width:80px;">Nghỉ ngơi</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Học tập</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')" style="flex:1;min-width:80px;">Nấu ăn</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ext-section">
+    <div class="ext-title">📋 Bài 2 – Thêm tân ngữ phù hợp (theo SGK)</div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:14px;">Chọn tân ngữ phù hợp cho động từ:</p>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">听 tīng + ____</div>
+      <div>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'correct')">音乐 âm nhạc</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">足球 bóng đá</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">汉字 chữ Hán</span>
+      </div>
+    </div>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">踢 tī + ____</div>
+      <div>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">音乐</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'correct')">足球</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">课</span>
+      </div>
+    </div>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">写 xiě + ____</div>
+      <div>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">游戏</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'correct')">汉字</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">西瓜</span>
+      </div>
+    </div>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">开 kāi + ____</div>
+      <div>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">课</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'correct')">车</span>
+        <span class="pdf-ex-choice" onclick="checkChoice(this,'wrong')">汉字</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ext-section">
+    <div class="ext-title">📋 Bài 3 – Dùng "别/不要…了" viết câu</div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:14px;">Dựa vào gợi ý, viết câu cầu khiến:</p>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">① (玩儿电脑 – chơi máy tính) → Đừng chơi máy tính nữa!</div>
+      <div style="margin-top:8px;"><input style="border:none;border-bottom:2px solid var(--red);outline:none;font-family:'Noto Sans SC',sans-serif;font-size:16px;width:280px;padding:2px;" id="wb1" placeholder="别/不要..."><button style="margin-left:8px;padding:5px 14px;background:var(--red);color:white;border:none;border-radius:20px;cursor:pointer;font-weight:700;" onclick="checkWB('wb1','别玩儿电脑了','不要玩儿电脑了')">✓</button><span id="wb1r" style="font-size:13px;margin-left:8px;"></span></div>
+    </div>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">② (喝茶 – uống trà) → Đừng uống trà nữa!</div>
+      <div style="margin-top:8px;"><input style="border:none;border-bottom:2px solid var(--red);outline:none;font-family:'Noto Sans SC',sans-serif;font-size:16px;width:280px;padding:2px;" id="wb2" placeholder="别/不要..."><button style="margin-left:8px;padding:5px 14px;background:var(--red);color:white;border:none;border-radius:20px;cursor:pointer;font-weight:700;" onclick="checkWB('wb2','别喝茶了','不要喝茶了')">✓</button><span id="wb2r" style="font-size:13px;margin-left:8px;"></span></div>
+    </div>
+    <div class="pdf-ex-item">
+      <div class="pdf-ex-zh">③ (找 – tìm kiếm) → Đừng tìm nữa!</div>
+      <div style="margin-top:8px;"><input style="border:none;border-bottom:2px solid var(--red);outline:none;font-family:'Noto Sans SC',sans-serif;font-size:16px;width:280px;padding:2px;" id="wb3" placeholder="别/不要..."><button style="margin-left:8px;padding:5px 14px;background:var(--red);color:white;border:none;border-radius:20px;cursor:pointer;font-weight:700;" onclick="checkWB('wb3','别找了','不要找了')">✓</button><span id="wb3r" style="font-size:13px;margin-left:8px;"></span></div>
+    </div>
+  </div>
+
+  <div class="ext-section">
+    <div class="ext-title">📋 Bài 4 – Điền 对 vào câu đúng</div>
+    <div class="mc-item">
+      <div class="mc-q">Câu nào ĐÚNG về cấu trúc 对?</div>
+      <div class="mc-options">
+        <div class="mc-opt" onclick="checkMC(this,'wrong')">A. 我很好对老师。</div>
+        <div class="mc-opt" onclick="checkMC(this,'correct')">B. 老师对我们很好。</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 对老师我很好。</div>
+      </div>
+    </div>
+    <div class="mc-item">
+      <div class="mc-q">Dịch: "Đọc sách có ích cho việc học tập."</div>
+      <div class="mc-options">
+        <div class="mc-opt" onclick="checkMC(this,'correct')">A. 看书对学习有帮助。</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')">B. 看书有帮助对学习。</div>
+        <div class="mc-opt" onclick="checkMC(this,'wrong')">C. 对看书学习有帮助。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// NAV
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ACTIVITY SWITCH
+function switchAct(id, btn) {
+  document.querySelectorAll('.activity-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.act-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('act-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// DIALOGUE SWITCH
+function switchDial(idx, btn) {
+  document.querySelectorAll('.dialogue-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dial-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('dial' + idx).classList.add('active');
+  btn.classList.add('active');
+}
+
+// PINYIN TOGGLE
+function togglePinyin(chatId) {
+  const chat = document.getElementById(chatId);
+  const idx = chatId.replace('chat','');
+  const sw = document.getElementById('pt'+idx);
+  chat.classList.toggle('hide-pinyin');
+  sw.classList.toggle('on');
+}
+
+// FLASHCARD DATA
+const fcData = [
+  {zh:'课', py:'kè', meaning:'Bài học / tiết học', ex:'上课 lên lớp · 下课 tan học'},
+  {zh:'帮助', py:'bāngzhù', meaning:'Giúp đỡ, hỗ trợ', ex:'帮助同学 giúp bạn học'},
+  {zh:'别', py:'bié', meaning:'Đừng, không nên', ex:'别说话 đừng nói'},
+  {zh:'哥哥', py:'gēge', meaning:'Anh trai', ex:'我哥哥 anh trai tôi'},
+  {zh:'鸡蛋', py:'jīdàn', meaning:'Trứng gà', ex:'买鸡蛋 mua trứng · 一个鸡蛋 một quả trứng'},
+  {zh:'西瓜', py:'xīguā', meaning:'Dưa hấu', ex:'吃西瓜 ăn dưa hấu'},
+  {zh:'正在', py:'zhèngzài', meaning:'Đang (hành động)', ex:'正在学习 đang học'},
+  {zh:'手机', py:'shǒujī', meaning:'Điện thoại di động', ex:'玩手机 chơi điện thoại'},
+  {zh:'洗', py:'xǐ', meaning:'Rửa, giặt', ex:'洗衣服 giặt áo · 洗手 rửa tay'},
+];
+let fcIdx = 0;
+function renderFC() {
+  const d = fcData[fcIdx];
+  document.getElementById('fcZh').textContent = d.zh;
+  document.getElementById('fcPy').textContent = d.py;
+  document.getElementById('fcBPy').textContent = d.py;
+  document.getElementById('fcMeaning').textContent = d.meaning;
+  document.getElementById('fcEx').textContent = d.ex;
+  document.getElementById('fcProg').textContent = (fcIdx+1) + ' / ' + fcData.length;
+  document.getElementById('fcCard').classList.remove('flipped');
+}
+function flipFC() { document.getElementById('fcCard').classList.toggle('flipped'); }
+function fcNav(dir) {
+  fcIdx = (fcIdx + dir + fcData.length) % fcData.length;
+  renderFC();
+}
+renderFC();
+
+// MATCH GAME
+const matchPairs = [
+  {zh:'课', vi:'Bài học'},
+  {zh:'帮助', vi:'Giúp đỡ'},
+  {zh:'别', vi:'Đừng'},
+  {zh:'哥哥', vi:'Anh trai'},
+  {zh:'鸡蛋', vi:'Trứng gà'},
+  {zh:'西瓜', vi:'Dưa hấu'},
+  {zh:'正在', vi:'Đang...'},
+  {zh:'手机', vi:'Điện thoại'},
+  {zh:'洗', vi:'Rửa/Giặt'},
+];
+let matchSelected = null;
+let matchScoreN = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function initMatch() {
+  matchSelected = null;
+  matchScoreN = 0;
+  document.getElementById('matchScore').textContent = 0;
+  const left = document.getElementById('matchLeft');
+  const right = document.getElementById('matchRight');
+  const shuffledZh = shuffle(matchPairs);
+  const shuffledVi = shuffle(matchPairs);
+  left.innerHTML = '';
+  right.innerHTML = '';
+  shuffledZh.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'match-item zh';
+    el.textContent = p.zh;
+    el.dataset.key = p.zh;
+    el.dataset.side = 'zh';
+    el.onclick = () => handleMatch(el);
+    left.appendChild(el);
+  });
+  shuffledVi.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'match-item vi';
+    el.textContent = p.vi;
+    el.dataset.key = p.zh;
+    el.dataset.side = 'vi';
+    el.onclick = () => handleMatch(el);
+    right.appendChild(el);
+  });
+}
+
+function handleMatch(el) {
+  if(el.classList.contains('matched')) return;
+  if(!matchSelected) {
+    matchSelected = el;
+    el.classList.add('selected');
+  } else {
+    if(matchSelected === el) { el.classList.remove('selected'); matchSelected = null; return; }
+    if(matchSelected.dataset.key === el.dataset.key && matchSelected.dataset.side !== el.dataset.side) {
+      matchSelected.classList.remove('selected');
+      matchSelected.classList.add('matched');
+      el.classList.add('matched');
+      matchScoreN++;
+      document.getElementById('matchScore').textContent = matchScoreN;
+    } else {
+      matchSelected.classList.add('wrong');
+      el.classList.add('wrong');
+      const s = matchSelected, e = el;
+      setTimeout(() => {
+        s.classList.remove('wrong','selected');
+        e.classList.remove('wrong','selected');
+      }, 600);
+    }
+    matchSelected = null;
+  }
+}
+initMatch();
+
+// SENTENCE ARRANGE
+const sentences = [
+  {words:['别','找','了','手机','在','桌子上','呢'], answer:'别找了手机在桌子上呢', vi:'Thôi tìm nữa, điện thoại đang trên bàn kia.'},
+  {words:['妈妈','正在','准备','午饭','呢'], answer:'妈妈正在准备午饭呢', vi:'Mẹ đang chuẩn bị bữa trưa.'},
+  {words:['看书','对','学习','有','帮助'], answer:'看书对学习有帮助', vi:'Đọc sách có ích cho việc học tập.'},
+  {words:['不要','看','电视','了','明天','有','汉语课'], answer:'不要看电视了明天有汉语课', vi:'Đừng xem TV nữa, ngày mai có tiết tiếng Trung.'},
+  {words:['那件','衣服','我','帮你','洗','了'], answer:'那件衣服我帮你洗了', vi:'Cái áo đó tôi đã giặt giúp bạn rồi.'},
+];
+
+function initArrange() {
+  const cont = document.getElementById('arrangeContainer');
+  cont.innerHTML = '';
+  sentences.forEach((s, idx) => {
+    const pool = shuffle([...s.words]);
+    const div = document.createElement('div');
+    div.className = 'sent-item';
+    div.innerHTML = `
+      <div class="sent-question">${idx+1}. Sắp xếp thành câu hoàn chỉnh:</div>
+      <div class="sent-vi">"${s.vi}"</div>
+      <div class="word-pool" id="pool${idx}">${pool.map(w=>`<div class="word-chip" onclick="moveChip(this,${idx},'pool')">${w}</div>`).join('')}</div>
+      <div class="sent-answer" id="ans${idx}"></div>
+      <div>
+        <button class="sent-check-btn" onclick="checkArrange(${idx})">Kiểm tra</button>
+        <button class="sent-reset-btn" onclick="resetArrange(${idx}, ${JSON.stringify(pool)})">↩ Reset</button>
+      </div>
+      <div class="sent-feedback" id="fb${idx}"></div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function moveChip(el, idx, from) {
+  const targetId = from === 'pool' ? 'ans'+idx : 'pool'+idx;
+  const target = document.getElementById(targetId);
+  const newChip = document.createElement('div');
+  newChip.className = 'word-chip';
+  newChip.textContent = el.textContent;
+  newChip.onclick = () => moveChip(newChip, idx, from === 'pool' ? 'ans' : 'pool');
+  target.appendChild(newChip);
+  el.remove();
+}
+
+function checkArrange(idx) {
+  const ans = document.getElementById('ans'+idx);
+  const chips = ans.querySelectorAll('.word-chip');
+  const userAns = Array.from(chips).map(c=>c.textContent).join('');
+  const fb = document.getElementById('fb'+idx);
+  if(userAns === sentences[idx].answer) {
+    fb.textContent = '✅ Chính xác!';
+    fb.className = 'sent-feedback ok';
+  } else {
+    fb.textContent = '❌ Chưa đúng, thử lại nhé!';
+    fb.className = 'sent-feedback err';
+  }
+}
+
+function resetArrange(idx, pool) {
+  const p = document.getElementById('pool'+idx);
+  const a = document.getElementById('ans'+idx);
+  const allWords = [...p.querySelectorAll('.word-chip'), ...a.querySelectorAll('.word-chip')].map(c=>c.textContent);
+  p.innerHTML = allWords.map(w=>`<div class="word-chip" onclick="moveChip(this,${idx},'pool')">${w}</div>`).join('');
+  a.innerHTML = '';
+  document.getElementById('fb'+idx).textContent = '';
+}
+initArrange();
+
+// MC check
+function checkMC(el, type) {
+  const group = el.parentElement;
+  if(group.querySelector('.correct,.wrong')) return;
+  group.querySelectorAll('.mc-opt').forEach(o => o.classList.add('disabled'));
+  el.classList.add(type);
+}
+
+function checkChoice(el, type) {
+  const group = el.parentElement;
+  if(group.querySelector('.correct,.wrong')) return;
+  group.querySelectorAll('.pdf-ex-choice').forEach(o => {
+    o.style.pointerEvents = 'none';
+  });
+  el.classList.add(type);
+}
+
+// FILL exercises
+function checkFill1() {
+  const f1 = document.getElementById('f1').value.trim();
+  const f2 = document.getElementById('f2').value.trim();
+  let msg = '';
+  const ok1 = f1.includes('工作') || f1.includes('làm việc') || f1.length > 0;
+  const ok2 = f2.includes('别') && f2.includes('电脑') && f2.includes('了');
+  if(ok2) msg += '✅ Câu 2 chính xác! ';
+  else msg += '❌ Câu 2: Gợi ý: 别玩电脑了，明天还有考试！';
+  document.getElementById('fill1-result').innerHTML = msg;
+  document.getElementById('fill1-result').style.color = ok2 ? 'var(--green)' : 'var(--red-light)';
+}
+
+function checkFill2() {
+  const f3 = document.getElementById('f3').value.trim().replace(/\s/g,'');
+  const f4 = document.getElementById('f4').value.trim().replace(/\s/g,'');
+  let msgs = [];
+  if(f3.includes('睡早觉') && f3.includes('对') && f3.includes('身体')) msgs.push('✅ Câu 1 đúng!');
+  else msgs.push('❌ Câu 1: Đáp án: 睡早觉对身体很好。');
+  if(f4.includes('看电影') && f4.includes('对') && f4.includes('汉语')) msgs.push('✅ Câu 2 đúng!');
+  else msgs.push('❌ Câu 2: Đáp án: 看电影对学汉语有帮助。');
+  document.getElementById('fill2-result').innerHTML = msgs.join('<br>');
+}
+
+function checkWB(id, ans1, ans2) {
+  const val = document.getElementById(id).value.trim().replace(/\s/g,'');
+  const r = document.getElementById(id+'r');
+  if(val === ans1.replace(/\s/g,'') || val === ans2.replace(/\s/g,'')) {
+    r.textContent = '✅ Đúng!'; r.style.color = 'var(--green)';
+  } else {
+    r.textContent = '❌ Gợi ý: ' + ans1; r.style.color = 'var(--red-light)';
+  }
+}
+
+// ===== WEB SPEECH TTS =====
+const dialogueTexts = {0: ["不要看电视了，明天上午还有汉语课呢。", "看电视对学汉语有帮助。", "明天的课你都准备好了吗？", "都准备好了。"], 1: ["别看报纸了，医生说你要多休息。", "好，不看了。给我一杯茶吧。", "医生说吃药后两个小时不要喝茶。", "医生还说什么了？", "医生让你听我的。"], 2: ["你怎么买了这么多东西啊？", "哥哥今天中午回来吃饭。", "我看看买什么了。羊肉、鸡蛋、面条、西瓜……真不少！妈妈呢？", "正在准备午饭呢！"], 3: ["你在找什么？", "你看见我的手机了吗？白色的。", "别找了，手机在桌子上呢，电脑旁边。", "你看见我的衣服了吗？红色的那件。", "那件衣服我帮你洗了，在外边呢。"]};
+
+let currentUtterance = null;
+let isSpeaking = false;
+
+function speakText(text, rate) {
+  if (!('speechSynthesis' in window)) {
+    alert('Trình duyệt không hỗ trợ Web Speech API. Hãy dùng Chrome hoặc Edge.');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'zh-CN';
+  utt.rate = rate || 0.85;
+  // Try to find a Chinese voice
+  const voices = window.speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.lang.startsWith('zh'));
+  if (zhVoice) utt.voice = zhVoice;
+  currentUtterance = utt;
+  window.speechSynthesis.speak(utt);
+}
+
+async function playDialogue(idx) {
+  if (!('speechSynthesis' in window)) {
+    alert('Trình duyệt không hỗ trợ Web Speech API. Hãy dùng Chrome hoặc Edge.');
+    return;
+  }
+  const lines = dialogueTexts[idx];
+  const btn = document.getElementById('ttsBtn' + idx);
+  const speed = parseFloat(document.getElementById('ttsSpeed' + idx).value);
+  
+  window.speechSynthesis.cancel();
+  btn.classList.add('playing');
+  btn.textContent = '⏸ Đang phát...';
+
+  const voices = window.speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.lang.startsWith('zh'));
+
+  let cancelled = false;
+  window._ttsCancel = () => { cancelled = true; };
+
+  for (let i = 0; i < lines.length; i++) {
+    if (cancelled) break;
+    await new Promise((resolve) => {
+      const utt = new SpeechSynthesisUtterance(lines[i]);
+      utt.lang = 'zh-CN';
+      utt.rate = speed;
+      if (zhVoice) utt.voice = zhVoice;
+      utt.onend = resolve;
+      utt.onerror = resolve;
+      window.speechSynthesis.speak(utt);
+    });
+    // Pause between lines
+    if (!cancelled) await new Promise(r => setTimeout(r, 400));
+  }
+
+  btn.classList.remove('playing');
+  btn.textContent = '▶ Phát toàn bộ';
+}
+
+function stopTTS() {
+  if (window._ttsCancel) window._ttsCancel();
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.tts-btn').forEach(b => {
+    b.classList.remove('playing');
+    if (b.id && b.id.startsWith('ttsBtn')) b.textContent = '▶ Phát toàn bộ';
+  });
+}
+
+// Load voices on page ready
+window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+
+</script>
+</body>
+</html>
